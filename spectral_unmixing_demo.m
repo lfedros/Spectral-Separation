@@ -30,12 +30,13 @@ nW = numel(waveL);
 [nX, nY] = size(source_dsRed);
 
 % add some noise to the mixing coefficient
-noisy_fpR = fpR + randn(size(fpR)).*fpR/10;
+noisy_fpR = fpR + randn(size(fpR)).*fpR/100;
 
 % create synthetic spectral data
+mixed_red = zeros(nX, nY, nW);
 for iW = 1:nW
     % add noise to each image
-    noise = randn(512)*max(fpR(iW,:))/10;
+    noise = randn(512)*max(fpR(iW,:))/50;
     mixed_red(:,:,iW) = noisy_fpR(iW,1).* source_dsRed + noisy_fpR(iW,2).* source_mCherry + noise;
     
 end

@@ -5,8 +5,19 @@ function  [sources, mixing, finalErr] = ...
 % uncorrelated source images while minimizing the quadratic reconstruction error over the data. 
 % Starting from the theoretical mix- ing coefficients, iterates between estimating the source 
 % images while keeping the mixing coefficient fixed and optimizing the mixing coefficients while keeping the source images fixed, until convergence
-%%
+%% INPUTS 
+%   data        nPx*nWave matrix, corresponding to images at different wavelengths
+%   mixGuess    nWave*nFPs guess of mixing coefficient based on in vitro data
+%   forceRatio  1 or 0, whether to force the relative ratio of the coefficient to
+%               stay the same during the iterations
+%   doPlot      1 or 0, whether to plot the loss function value at each
+%               iteration
 
+%% OUTPUTS
+%   sources     nPx*nFPs source images
+%   mixing      nWave*nFPs mixing coefficient
+%   finalErr    final value of loss function
+%%
 
 if nargin < 3
     forceRatio = false;
@@ -24,7 +35,7 @@ if forceRatio
     r = r0;
 end
 
-data = data'; % nPx*nCh --> nCh*nPx
+data = data'; % nPx*nWaves --> nWaves*nPx
 
 %  estimate sources with initial mixing guess
 sourceGuess = pinv(mixGuess)*data; % data is nCh*nPx, mixing is nCh*nF, sources is nF*nPx
@@ -34,10 +45,10 @@ errReconstruct = data - mixGuess*sourceGuess;
 errReconstruct = sum(errReconstruct(:).^2)/sum(data(:).^2); % reconstruction error
 uncorr = abs(corr(sourceGuess(1,:)', sourceGuess(2,:)')); % correlation between the 2 sources
 
-% negWeigth = sum(sourceGuess(sourceGuess(2,:)<0).^2)...
+% negVals = sum(sourceGuess(sourceGuess(2,:)<0).^2)...
 %     /sum(sourceGuess(2, :).^2); % penalty for non-sensical negative values in source
 % mutInfo = mutualInformation(sourceGuess(1,:), sourceGuess(2,:)); % mutual information between the sources
-% sourceBlow = sum(sourceGuess(2,:).^2)/sum(sourceGuess(:).^2); % penalty to avoid one source to become dominant;
+% dominant = sum(sourceGuess(2,:).^2)/sum(sourceGuess(:).^2); % penalty to avoid one source to become dominant;
 
 iter = 1;
 if forceRatio
@@ -81,9 +92,9 @@ while  tol > 10^(-10) && iter <100
     errReconstruct = data - mixing*sources;
     errReconstruct = sum(errReconstruct(:).^2)/sum(data(:).^2);
     uncorr = abs(corr(sourceGuess(1,:)', sourceGuess(2,:)'));
-    %     negWeigth = sum(sources(sources(2,:)<0).^2)/sum(sources(2, :).^2);
+    %     negVals = sum(sources(sources(2,:)<0).^2)/sum(sources(2, :).^2);
     %     mutInfo = mutualInformation(sources(1,:), sources(2,:));
-    %     sourceBlow = sum(sources(2,:).^2)/sum(sources(:).^2);
+    %     dominant = sum(sources(2,:).^2)/sum(sources(:).^2);
     
     if forceRatio
         err(iter)  = errReconstruct*uncorr;
