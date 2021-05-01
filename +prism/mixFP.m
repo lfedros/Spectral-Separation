@@ -1,13 +1,23 @@
-function [fpR, fpG] = mixFP(varargin, waveL)
-%% 
-%   first input is a
+function [fpR, fpG] = mixFP(FPs, waveL)
+%% INPUTS
+%   FPs      1*nFPs cell array containing names of query FPs. Look-up tables for spectral data
+%            are stored in the folder 'GitHub/Spectral
+%            Separation/2Pspectra'. Source:
+%            FPbase.com and Dr. M. Drobizhev
 
+%   waveL    1*nW query excitation wavelenghts
+%% OUTPUTS
 
-nFP = numel(varargin);
+%   fpR     nW*nFPs vector of mixing coefficients, estimated from in vitro excitation
+%           and emission spectra, for  fluorescence recorded in user defined (hard coded) green and
+%           red channel
+%%
+
+nFP = numel(FPs);
 
 for iF = 1:nFP
     
-    fp_name = varargin{iF};
+    fp_name = FPs{iF};
     
     % get excitation spectrum
     excSpectrum(:, iF) = prism.excitationSpectrum(fp_name, waveL);
