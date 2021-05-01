@@ -1,4 +1,7 @@
 function [fpR, fpG] = mixFP(varargin, waveL)
+%% 
+%   first input is a
+
 
 nFP = numel(varargin);
 

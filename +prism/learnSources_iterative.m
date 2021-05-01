@@ -7,6 +7,7 @@ end
 
 if nargin < 4
     doPlot = false;
+
 end
 % add intercept? 
 % mixGuess = cat(2, mixGuess, ones(size(mixGuess, 1),1));
@@ -15,6 +16,8 @@ if forceRatio
 r0 = mixGuess(:,2)./mixGuess(:,1);
 r = r0;
 end
+
+data = data'; % nPx*nCh --> nCh*nPx
 
 %  estimate sources with initial mixing guess
 sourceGuess = pinv(mixGuess)*data; % data is nCh*nPx, mixing is nCh*nF, sources is nF*nPx
@@ -93,9 +96,10 @@ while  tol > 10^(-10) && iter <100
     
     % plot loss function if requested
     if doPlot
+        figure(e);
         cla;plot(1:iter, log10(err), '-o'); hold on; drawnow;
         xlabel('iteration #')
-        ylabel('log10(variance explained)')
+        ylabel('log10(err)')
     end
     % pause;
     
@@ -112,6 +116,7 @@ while  tol > 10^(-10) && iter <100
     
 end
 
+    sources = pinv(mixing)*data;
 
 
 
