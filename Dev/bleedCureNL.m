@@ -100,27 +100,27 @@ if doPlot
     caxis(prctile(makeVec(R(:,:,iM)), [30, 98]));
     formatAxes
     set(gca, 'Xtick', [], 'YTick', [])
-    xlim([170 470]);ylim([80 380]);
+%     xlim([170 470]);ylim([80 380]);
     
     g1= subplot(nImg,4,2+ (iM-1)*4);
     imagesc(imgaussfilt(G(:,:,iM))); axis image; colormap(g1, gm)
     caxis(prctile(makeVec(G(:,:,iM)), [15, 95]));
     formatAxes
     set(gca, 'Xtick', [], 'YTick', [])
-    xlim([170 470]);ylim([80 380]);
+%     xlim([170 470]);ylim([80 380]);
 
     r2 = subplot(nImg,4,3+ (iM-1)*4);
     imagesc(imgaussfilt(curedR(:,:,iM))); axis image; colormap(r2, rm)
     caxis( [25 prctile(makeVec(R(:,:,iM)), [75])]);
     formatAxes
     set(gca, 'Xtick', [], 'YTick', [])
-    xlim([170 470]);ylim([80 380]);
+%     xlim([170 470]);ylim([80 380]);
 
     r3 = subplot(nImg,4,4+ (iM-1)*4);
     imagesc(redPx(:,:,iM)); axis image; colormap(r3, flip(gray,1))
     formatAxes
     set(gca, 'Xtick', [], 'YTick', [])
-    xlim([170 470]);ylim([80 380]);
+%     xlim([170 470]);ylim([80 380]);
 
     end
     

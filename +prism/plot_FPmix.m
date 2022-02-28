@@ -32,8 +32,8 @@ for iW = 1:nW
     title ([num2str(waveL(iW)), ' nm']);
 
     for iWW = iW+1:nW
-        thisW = FPmix(:,:,iW);
-        otherW = FPmix(:,:,iWW);
+        thisW = FPmix(:,:,iWW);
+        otherW = FPmix(:,:,iW);
         [xy, bins] = xy_projection(cat(2, thisW(:), otherW(:)), plotOpts);
         rdist{iW, iWW}= subplot(nW,nW,iWW + (iW-1)*(nW));
         imagesc(bins, bins, imgaussfilt(xy)); axis image; axis xy
