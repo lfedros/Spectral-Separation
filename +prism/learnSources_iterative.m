@@ -128,6 +128,9 @@ while  tol > 10^(-10) && iter <100
     
 end
 
+if ~exist('mixing', 'var')
+    mixing = mixGuess;
+end
 sources = pinv(mixing)*data;
 
 

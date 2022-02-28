@@ -1,12 +1,16 @@
-function plot_sourceFP(FPs, ROI)
+function plot_sourceFP(FPs, ROI, FPname)
 
+if nargin <3
+    
+    FPname = {'FP1', 'FP2'};
+end
 
 [nX, nY, nS] = size(FPs); 
 
 dsRedImg = FPs(:,:,1);
 mCherryImg = FPs(:,:,2);
 
-if nargin <2
+if nargin <2 || isempty(ROI)
     ROI = [1 nX 1 nY];
 end
 
@@ -28,7 +32,7 @@ colormap(r1, rm);
 formatAxes
     xlim([ROI(1) ROI(2)]);ylim([ROI(3) ROI(4)]);
 
-title('dsRed')
+title(FPname{1})
 
 r2 = subplot(1,3,2);
 imagesc(imgaussfilt(mCherryImg)); axis image;caxis(lims2); colorbar;
@@ -37,7 +41,7 @@ linkaxes([r1 r2], 'xy')
     xlim([ROI(1) ROI(2)]);ylim([ROI(3) ROI(4)]);
 
 formatAxes
-title('mCherry')
+title(FPname{2})
 
 
 r3 = subplot(1,3,3);
@@ -53,8 +57,8 @@ imagesc(bins, bins, imgaussfilt(xy)); axis image; axis xy
 caxis([0 0.00001])
 colormap(r3, flip(gray));
 
-xlabel('dsRed')
-ylabel('mCherry')
+xlabel(FPname{1})
+ylabel(FPname{2})
 
 xlim([plotOpts.lmin plotOpts.lmax])
 ylim([plotOpts.lmin plotOpts.lmax])
